@@ -27,6 +27,16 @@ Not another tutorial URL shortener. This project deliberately exposes bottleneck
 ```bash
 curl http://localhost:5000
 ```
+
+## Verify Database is created
+```bash
+docker compose exec psql -U postgres -d urlshortener -c '\dt'
+```
+
+## Teardown Application
+```bash
+docker compose down -v
+```
 ## License
 
 MIT

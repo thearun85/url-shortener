@@ -5,7 +5,7 @@ services:
       context: .
     environment:
       - FLASK_DEBUG=0
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/urlshortner
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/urlshortener
     ports:
       - "5000:5000"
     depends_on:
@@ -16,13 +16,13 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=urlshortner
+      - POSTGRES_DB=urlshortener
     ports:
       - "5432:5432"
     volumes:
       - postgres_data_urlshortner:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "urlshortner"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "urlshortener"]
       interval: 5s
       timeout: 5s
       retries: 5
