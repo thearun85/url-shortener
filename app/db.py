@@ -5,7 +5,7 @@ class Base(DeclarativeBase):
     pass
 
 engine = None
-SessionLocal = None
+Session = None
 
 def init_db(db_url):
     global engine, Session
