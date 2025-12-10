@@ -54,3 +54,23 @@ def create_url():
     finally:
         session.close()
     
+@urls_bp.route("/<short_code>", methods=['GET'])
+def get_url(short_code):
+
+    session = get_session()
+    try:
+        url = session.query(URL).filter_by(short_code=short_code).first()
+        if not url:
+            return jsonify({
+                "error": "URL not found"
+            }), 404
+
+        click_count = len(url.clicks) if url.clicks is not None else 0
+        return jsonify({
+            "short_code": url.short_code,
+            "original_url": url.original_url,
+            "created_at": url.created_at.isoformat(),
+            "clicks": click_count,
+        }), 200
+    finally:
+        session.close()

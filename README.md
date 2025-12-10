@@ -38,14 +38,15 @@ docker compose exec db psql -U postgres -d urlshortener -c '\dt'
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | /api/urls | Create a short code for the url |
+| GET | /api/urls/<short_code> | Get the details of a short code |
+| GET | /<short_code> | Launch the url referred by the short code | 
 
 **Create Shortcode:**
 ```bash
-curl -X POST http://localhost:5000/api/urls \ 
+curl -X POST http://localhost:5000/api/urls \
 -H "Content-Type: application/json" \
 -d '{"url":"http://localexample.com"}'
 ```
-
 Expected Output:
 ```json
 {
@@ -53,6 +54,26 @@ Expected Output:
 	"original_url":"http://localexample.com",
 	"short_code":"btj"
 }
+```
+
+**Get Shortcode Details:**
+
+```bash
+curl http://localhost:5000/api/urls/<short_code>
+```
+Expected Output:
+```json
+{
+	"clicks":0,"created_at":"2025-12-10T18:50:28.253664",
+	"original_url":"http://localexample.com",
+	"short_code":"5i6"
+}
+```
+
+**Redirect URL:**
+
+```bash
+curl http://localhost:5000/<short_code>
 ```
 
 ## Teardown Application
