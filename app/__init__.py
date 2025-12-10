@@ -13,7 +13,8 @@ def create_app():
         Base.metadata.create_all(engine)
 
         
-    from app.routes import health_bp
+    from app.routes import health_bp, urls_bp
     app.register_blueprint(health_bp)
-
+    app.register_blueprint(urls_bp)
+    
     return app

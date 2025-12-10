@@ -23,6 +23,7 @@ Not another tutorial URL shortener. This project deliberately exposes bottleneck
 | Server | Gunicorn (sync) | Worker scaling visible |
 | Container | Docker + Compose | Reproducible |
 
+
 ## Running Locally
 ```bash
 curl http://localhost:5000
@@ -30,13 +31,35 @@ curl http://localhost:5000
 
 ## Verify Database is created
 ```bash
-docker compose exec psql -U postgres -d urlshortener -c '\dt'
+docker compose exec db psql -U postgres -d urlshortener -c '\dt'
+```
+
+## Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/urls | Create a short code for the url |
+
+**Create Shortcode:**
+```bash
+curl -X POST http://localhost:5000/api/urls \ 
+-H "Content-Type: application/json" \
+-d '{"url":"http://localexample.com"}'
+```
+
+Expected Output:
+```json
+{
+	"created_at":"2025-12-10T18:09:27.742641",
+	"original_url":"http://localexample.com",
+	"short_code":"btj"
+}
 ```
 
 ## Teardown Application
 ```bash
 docker compose down -v
 ```
-## License
 
 MIT
+
+## License
