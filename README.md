@@ -23,6 +23,10 @@ Not another tutorial URL shortener. This project deliberately exposes bottleneck
 | Server | Gunicorn (sync) | Worker scaling visible |
 | Container | Docker + Compose | Reproducible |
 
+## Running Locally
+```bash
+curl http://localhost:5000
+```
 ## License
 
 MIT
