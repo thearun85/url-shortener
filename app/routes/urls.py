@@ -65,7 +65,7 @@ def get_url(short_code):
                 "error": "URL not found"
             }), 404
 
-        click_count = len(url.clicks) if url.clicks is not None else 0
+        click_count = len(url.clicks) if url.clicks else 0
         return jsonify({
             "short_code": url.short_code,
             "original_url": url.original_url,

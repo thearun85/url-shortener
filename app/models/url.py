@@ -12,4 +12,4 @@ class URL(Base):
     short_code: Mapped[str] = mapped_column(String(10), unique=True, nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, server_default=func.now())
 
-    clicks: Mapped[Click] = relationship("Click", back_populates="url", cascade="all, delete-orphan")
+    clicks: Mapped[list[Click]] = relationship("Click", back_populates="url", cascade="all, delete-orphan")

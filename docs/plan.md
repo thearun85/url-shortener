@@ -16,9 +16,9 @@ Single sync worker, establish baseline before scaling.
 | 2 | Models + DB setup with `create_all()` | Completed |
 | 3 | Create URL API - short code generation | Completed |
 | 4 | Read + redirect API | Completed |
-| 5 | Click tracking API | Not Started |
+| 5 | Click tracking API | Completed |
 | 6 | Validations | Not Started |
 | 7 | Create URL API - Collision tracking | Not Started |
-| 7 | Load testing, baseline metrics, document single-worker limits | Not Started |
+| 8 | Load testing, baseline metrics, document single-worker limits | Not Started |
 
 **Outcome:** Documented proof that single sync worker saturates at X RPS.
