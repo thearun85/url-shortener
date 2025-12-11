@@ -31,8 +31,13 @@ Add visibility before optimization.
 |-------|-------------|--------|
 | 0a | Alembic migrations setup | Completed |
 | 0b | Changes to run migrations via shell script | Completed |
-| 1 | Multiple Gunicorn workers | Not Started |
-| 2 | Prometheus metrics integration | Not Started |
-| 3 | Grafana dashboard | Not Started |
+| 1 | Multiple Gunicorn workers load testing with baseline results | Not Started |
+| 2 | Prometheus metrics integration | Completed |
+| 3 | Grafana dashboard | On Hold |
 
-**Outcome:** Live dashboard showing multi-worker performance, baseline for Version 0.3 optimizations.
+**Outcome:** 
+- Alembic migrations enable safe multi-worker deployments
+- Load testing showed 4 workers = +18% RPS under 100 users, but no improvement at 20 users
+- Persistent 68s tail latency confirms database I/O bottleneck (not CPU)
+- Prometheus tracks creates, collisions, redirects
+- Next optimization: caching to reduce database pressure

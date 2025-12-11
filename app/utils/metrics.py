@@ -1,26 +1,26 @@
-metrics = {
-    "total_creates": 0,
-    "total_collisions": 0,
-}
+from prometheus_client import Counter, Histogram, generate_latest, REGISTRY, CONTENT_TYPE_LATEST
 
-def increment_creates():
-    metrics["total_creates"] +=1
+url_creates_total = Counter(
+    'url_creates_total',
+    'Total URLs created'
+)
 
-def increment_collisions():
-    metrics["total_collisions"] +=1
+url_collisions_total = Counter(
+    'url_collisions_total',
+    'Total short code collisions'
+)
+
+redirects_total  = Counter(
+    'redirects_total',
+    'Total redirects served'
+)
+
+request_duration_seconds = Histogram(
+    'request_duration_seconds',
+    'Request duration in seconds',
+    ['method', 'endpoint'],
+    buckets = [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0]
+)
 
 def get_metrics():
-    collision_rate = 0.0
-    if metrics["total_creates"] > 0:
-        collision_rate = metrics["total_collisions"]/ metrics["total_creates"]
-
-    return {
-        "total_creates": metrics["total_creates"],
-        "total_collisions": metrics["total_collisions"],
-        "collision_rate": round(collision_rate,4),
-    }
-
-
-def reset_metrics():
-    metrics["total_creates"] = 0
-    metrics["total_collisions"] = 0
+    return generate_latest(REGISTRY), CONTENT_TYPE_LATEST

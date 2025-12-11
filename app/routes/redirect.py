@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, redirect
 from app.db import get_session
 from app.models import URL, Click
-from app.utils import validate_short_code
+from app.utils import validate_short_code, redirects_total
 
 redirect_bp = Blueprint("redirect", __name__)
 
@@ -26,6 +26,7 @@ def redirect_to_url(short_code):
         )
         session.add(click)
         session.commit()
+        redirects_total.inc()
         return redirect(url.original_url, code=302)
     finally:
         session.close()

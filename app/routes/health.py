@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, Response
 from app.utils import get_metrics
 
 health_bp = Blueprint("health", __name__)
@@ -11,4 +11,5 @@ def health_check():
 
 @health_bp.route("/metrics")
 def metrics():
-    return jsonify(get_metrics()), 200
+    data, content_type = get_metrics()
+    return Response(data, mimetype=content_type)
