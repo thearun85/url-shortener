@@ -42,6 +42,16 @@ docker compose exec db psql -U postgres -d urlshortener -c '\dt'
 | short_code | Cannot be empty |
 | short_code | Cannot exceed 10 characters |
 
+### Invalid URL
+```bash
+curl -X POST http://localhost:5000/api/urls -H "Content-Type: application/json"
+``` -d '{"url": "not-a-url"}'
+
+### Invalid short code
+```bash
+curl http://localhost:5000/api/urls/abc!@#
+```
+
 ## Endpoints
 | Method | Endpoint | Description |
 |--------|----------|-------------|
