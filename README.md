@@ -109,6 +109,12 @@ Expected Output:
 docker compose down -v
 ```
 
+## Load Testing
+```bash
+docker compose -f docker-compose.loadtest.yml up --build
+http://localhost:8089
+```
+
 MIT
 
 ## License
