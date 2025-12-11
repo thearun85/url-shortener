@@ -19,6 +19,6 @@ Single sync worker, establish baseline before scaling.
 | 5 | Click tracking API | Completed |
 | 6 | Validations | Completed |
 | 7 | Create URL API - Collision tracking | Completed |
-| 8 | Load testing, baseline metrics, document single-worker limits | Completed |
+| 8 | Load testing, baseline metrics, document single-worker limits with locust | Completed |
 
 **Outcome:** Documented proof that single sync worker sustains ~34 RPS with 4ms median latency, but 68-second tail latency under pressure due to request queuing.
