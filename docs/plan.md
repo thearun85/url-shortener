@@ -18,7 +18,7 @@ Single sync worker, establish baseline before scaling.
 | 4 | Read + redirect API | Completed |
 | 5 | Click tracking API | Completed |
 | 6 | Validations | Completed |
-| 7 | Create URL API - Collision tracking | Not Started |
+| 7 | Create URL API - Collision tracking | Completed |
 | 8 | Load testing, baseline metrics, document single-worker limits | Not Started |
 
 **Outcome:** Documented proof that single sync worker saturates at X RPS.

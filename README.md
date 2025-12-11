@@ -57,7 +57,8 @@ curl http://localhost:5000/api/urls/abc!@#
 |--------|----------|-------------|
 | POST | /api/urls | Create a short code for the url |
 | GET | /api/urls/<short_code> | Get the details of a short code |
-| GET | /<short_code> | Launch the url referred by the short code | 
+| GET | /<short_code> | Launch the url referred by the short code |
+| GET | /metrics | Get the collision metrics | 
 
 **Create Shortcode:**
 ```bash
@@ -92,6 +93,15 @@ Expected Output:
 
 ```bash
 curl http://localhost:5000/<short_code>
+```
+
+**Get Metrics:**
+```bash
+curl http://localhost:5000/metrics
+```
+Expected Output:
+```json
+{"collision_rate":0.0,"total_collisions":0,"total_creates":7}
 ```
 
 ## Teardown Application

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.db import get_session
 from app.models import URL
-from app.utils import get_short_code, validate_url, validate_short_code
+from app.utils import get_short_code, validate_url, validate_short_code, increment_collisions, increment_creates
 
 urls_bp = Blueprint("URL", __name__, url_prefix="/api/urls")
 
@@ -33,6 +33,7 @@ def create_url():
             if not code:
                 break
             retries+=1
+            increment_collisions()
 
         if retries >= MAX_RETRIES:
             return jsonify({
@@ -45,6 +46,7 @@ def create_url():
         session.add(url)
         session.commit()
         session.refresh(url)
+        increment_creates()
 
         return jsonify({
             "short_code": url.short_code,
