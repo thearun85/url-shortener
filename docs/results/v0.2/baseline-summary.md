@@ -57,10 +57,27 @@ Adding workers without sufficient concurrent load creates overhead without benef
 ### 2. Persistent 68-Second Tail Latency
 All tests showed ~68 second maximum response times regardless of worker count. This indicates a systemic bottleneck unrelated to application-layer parallelism.
 
-**Possible causes:**
-- Database connection timeout
-- Gunicorn worker timeout (default: 30s, but we're seeing 68s)
-- Request queuing under load spikes
+**Problem:** Max latency of ~68 seconds in 3-minute tests, absent in 1-minute tests.
+
+**Root Cause:** PostgreSQL checkpoint I/O
+
+**Evidence from logs:**
+```
+checkpoint starting: time
+checkpoint complete: write=20.686 s, total=20.701 s
+```
+
+**Timeline:**
+| Time | RPS | P95 | Event |
+|------|-----|-----|-------|
+| 0:00 - 1:30 | 483 | 15-47ms | Healthy |
+| 1:30 | 162 | 68ms | Checkpoint starts |
+| 1:35 | 162 | 68,000ms | Queue backup |
+| 2:00+ | 107 | — | Slow recovery |
+
+**Explanation:** Checkpoint I/O blocks queries for ~20s. Requests queue up, and cumulative wait reaches 68s for tail requests.
+
+**Mitigation (v0.3):** Redis caching to reduce DB write pressure, checkpoint tuning.
 
 ### 3. P95 vs P99 Gap
 | Users | P95 | P99 |
