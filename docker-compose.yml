@@ -6,6 +6,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/urlshortener
+      - WORKERS=1
     ports:
       - "5000:5000"
     depends_on:

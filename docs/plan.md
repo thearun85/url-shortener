@@ -29,7 +29,8 @@ Add visibility before optimization.
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Alembic migrations setup | Completed |
+| 0a | Alembic migrations setup | Completed |
+| 0b | Changes to run migrations via shell script | Completed |
 | 1 | Multiple Gunicorn workers | Not Started |
 | 2 | Prometheus metrics integration | Not Started |
 | 3 | Grafana dashboard | Not Started |
