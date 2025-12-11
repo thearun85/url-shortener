@@ -115,6 +115,29 @@ docker compose -f docker-compose.loadtest.yml up --build
 http://localhost:8089
 ```
 
+## Database Migrations
+
+### Initial Setup
+```bash
+alembic init alembic
+```
+Creates `alembic.ini` and `alembic/` folder.
+
+### Generate Migration
+```bash
+alembic revision --autogenerate -m "description"
+```
+
+### Apply Migrations
+```bash
+alembic upgrade head
+```
+
+### Rollback
+```bash
+alembic downgrade -1
+```
+
 MIT
 
 ## License

@@ -22,3 +22,16 @@ Single sync worker, establish baseline before scaling.
 | 8 | Load testing, baseline metrics, document single-worker limits with locust | Completed |
 
 **Outcome:** Documented proof that single sync worker sustains ~34 RPS with 4ms median latency, but 68-second tail latency under pressure due to request queuing.
+
+## Version 0.2 — Observability + Multi-Worker
+
+Add visibility before optimization.
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Alembic migrations setup | Completed |
+| 1 | Multiple Gunicorn workers | Not Started |
+| 2 | Prometheus metrics integration | Not Started |
+| 3 | Grafana dashboard | Not Started |
+
+**Outcome:** Live dashboard showing multi-worker performance, baseline for Version 0.3 optimizations.
