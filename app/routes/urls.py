@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.db import get_session
 from app.models import URL
-from app.utils import get_short_code
+from app.utils import get_short_code, validate_url, validate_short_code
 
 urls_bp = Blueprint("URL", __name__, url_prefix="/api/urls")
 
@@ -10,7 +10,6 @@ MAX_RETRIES = 10
 @urls_bp.route("", methods=['POST'])
 def create_url():
 
-    session = get_session()
     data = request.get_json()
     if not data or "url" not in data:
         return jsonify({
@@ -19,7 +18,13 @@ def create_url():
 
     orig_url = data["url"]
 
-    gen_short_code = 'yry'
+    is_valid, error = validate_url(orig_url)
+    if not is_valid:
+        return jsonify({
+            "error": error
+        }), 400
+        
+    session = get_session()
     try:
         retries = 0
         while retries < MAX_RETRIES:
@@ -57,6 +62,12 @@ def create_url():
 @urls_bp.route("/<short_code>", methods=['GET'])
 def get_url(short_code):
 
+    is_valid, error = validate_short_code(short_code)
+    if not is_valid:
+        return jsonify({
+            "error": error
+        }), 400
+        
     session = get_session()
     try:
         url = session.query(URL).filter_by(short_code=short_code).first()

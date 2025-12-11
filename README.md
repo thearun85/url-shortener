@@ -34,6 +34,14 @@ curl http://localhost:5000
 docker compose exec db psql -U postgres -d urlshortener -c '\dt'
 ```
 
+## Validations
+| Field | Validation |
+|-------|------------|
+| url | Cannot be empty |
+| url | Cannot exceed 2048 characters |
+| short_code | Cannot be empty |
+| short_code | Cannot exceed 10 characters |
+
 ## Endpoints
 | Method | Endpoint | Description |
 |--------|----------|-------------|

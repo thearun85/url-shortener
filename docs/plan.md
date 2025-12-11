@@ -17,7 +17,7 @@ Single sync worker, establish baseline before scaling.
 | 3 | Create URL API - short code generation | Completed |
 | 4 | Read + redirect API | Completed |
 | 5 | Click tracking API | Completed |
-| 6 | Validations | Not Started |
+| 6 | Validations | Completed |
 | 7 | Create URL API - Collision tracking | Not Started |
 | 8 | Load testing, baseline metrics, document single-worker limits | Not Started |
 

@@ -1,12 +1,19 @@
 from flask import Blueprint, jsonify, redirect
 from app.db import get_session
 from app.models import URL, Click
+from app.utils import validate_short_code
 
 redirect_bp = Blueprint("redirect", __name__)
 
 @redirect_bp.route("/<short_code>")
 def redirect_to_url(short_code):
-
+    is_valid, error = validate_short_code(short_code)
+    print(f"short code is {short_code}")
+    if not is_valid:
+        return jsonify({
+            "error": error
+        }), 400
+        
     session = get_session()
     try:
         url = session.query(URL).filter_by(short_code=short_code).first()
