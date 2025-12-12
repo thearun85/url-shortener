@@ -1,0 +1,179 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 577B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 278B done
+#2 DONE 0.0s
+
+#3 [auth] library/golang:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.21-alpine
+#4 ...
+
+#5 [internal] load metadata for docker.io/library/python:3.11-alpine
+#5 DONE 0.3s
+
+#4 [internal] load metadata for docker.io/library/golang:1.21-alpine
+#4 DONE 0.9s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 128B done
+#7 DONE 0.0s
+
+#8 [builder 1/2] FROM docker.io/library/golang:1.21-alpine@sha256:2414035b086e3c42b99654c8b26e6f5b1b1598080d65fd03c7f499552ff4dc94
+#8 resolve docker.io/library/golang:1.21-alpine@sha256:2414035b086e3c42b99654c8b26e6f5b1b1598080d65fd03c7f499552ff4dc94 0.0s done
+#8 DONE 0.0s
+
+#9 [stage-1 1/5] FROM docker.io/library/python:3.11-alpine@sha256:d174db33fa506083fbd941b265f7bae699e7c338c77c415f85dddff4f176d1de
+#9 resolve docker.io/library/python:3.11-alpine@sha256:d174db33fa506083fbd941b265f7bae699e7c338c77c415f85dddff4f176d1de 0.0s done
+#9 DONE 0.0s
+
+#10 [stage-1 4/5] WORKDIR /loadtests
+#10 CACHED
+
+#11 [builder 2/2] RUN go install github.com/rakyll/hey@latest
+#11 CACHED
+
+#12 [stage-1 2/5] COPY --from=builder /go/bin/hey /usr/local/bin/hey
+#12 CACHED
+
+#13 [stage-1 3/5] RUN pip install requests
+#13 CACHED
+
+#14 [stage-1 5/5] COPY . .
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:1087f972aeb0cdbd8c3ba5b471d977d7222142d3ad1206a114097d00b69348d1 done
+#15 exporting config sha256:fad85e9b0f7039b91f8367a7c1c6a4aaf89af1a575af1eeeb62a1ae8860f4cf7 done
+#15 exporting attestation manifest sha256:20fa33180008ff2b07b4ce1ced1498d5d29c004c246085cdea3514123dac7008 done
+#15 exporting manifest list sha256:891cea839820c92412a1c26537d50f7f84912e306fc634fe216275bd2526be96 done
+#15 naming to docker.io/library/url-shortener-loadtest:latest done
+#15 unpacking to docker.io/library/url-shortener-loadtest:latest done
+#15 DONE 0.0s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.0s
+ url-shortener-loadtest  Built
+time="2025-12-12T14:57:47Z" level=warning msg="Found orphan containers ([url-shortener-prometheus-1 url-shortener-app-1 url-shortener-db-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container url-shortener-loadtest-1  Recreate
+ Container url-shortener-loadtest-1  Recreated
+Attaching to loadtest-1
+loadtest-1  | Waiting for app at http://host.docker.internal:5000...
+loadtest-1  | App is ready.
+loadtest-1  | 
+loadtest-1  | Seeding 50 URLs...
+loadtest-1  | Done. Test short code: iES
+loadtest-1  | 
+loadtest-1  | ============================================================
+loadtest-1  | REDIRECT TEST (GET /<short_code>)
+loadtest-1  | ============================================================
+loadtest-1  | --- Redirect (c=1) ---
+loadtest-1  |   Total:	21.5543 secs
+loadtest-1  |   Slowest:	19.3807 secs
+loadtest-1  |   Fastest:	0.0017 secs
+loadtest-1  |   Average:	0.0196 secs
+loadtest-1  |   Requests/sec:	50.9874
+loadtest-1  |   50% in 0.0019 secs
+loadtest-1  |   95% in 0.0024 secs
+loadtest-1  |   99% in 0.0053 secs
+loadtest-1  |   [302]	1099 responses
+loadtest-1  | 
+loadtest-1  | --- Redirect (c=10) ---
+loadtest-1  |   Total:	20.0582 secs
+loadtest-1  |   Slowest:	0.0181 secs
+loadtest-1  |   Fastest:	0.0024 secs
+loadtest-1  |   Average:	0.0069 secs
+loadtest-1  |   Requests/sec:	2.6423
+loadtest-1  |   50% in 0.0057 secs
+loadtest-1  |   95% in 0.0156 secs
+loadtest-1  |   [302]	43 responses
+loadtest-1  | 
+loadtest-1  | --- Redirect (c=50) ---
+loadtest-1  |   Total:	20.0917 secs
+loadtest-1  |   Slowest:	19.7744 secs
+loadtest-1  |   Fastest:	0.0019 secs
+loadtest-1  |   Average:	4.3856 secs
+loadtest-1  |   Requests/sec:	10.0539
+loadtest-1  |   50% in 0.0221 secs
+loadtest-1  |   95% in 19.7369 secs
+loadtest-1  |   99% in 19.7744 secs
+loadtest-1  |   [302]	196 responses
+loadtest-1  | 
+loadtest-1  | --- Redirect (c=100) ---
+loadtest-1  |   Total:	22.5413 secs
+loadtest-1  |   Slowest:	19.7893 secs
+loadtest-1  |   Fastest:	0.0019 secs
+loadtest-1  |   Average:	0.0981 secs
+loadtest-1  |   Requests/sec:	148.6602
+loadtest-1  |   50% in 0.0390 secs
+loadtest-1  |   95% in 0.0951 secs
+loadtest-1  |   99% in 0.1240 secs
+loadtest-1  |   [302]	3259 responses
+loadtest-1  | 
+loadtest-1  | ============================================================
+loadtest-1  | CREATE URL TEST (POST /api/urls)
+loadtest-1  | ============================================================
+loadtest-1  | --- Create (c=1) ---
+loadtest-1  |   Total:	20.0239 secs
+loadtest-1  |   Slowest:	0.0082 secs
+loadtest-1  |   Fastest:	0.0082 secs
+loadtest-1  |   Average:	0.0082 secs
+loadtest-1  |   Requests/sec:	0.0999
+loadtest-1  |   [201]	1 responses
+loadtest-1  | 
+loadtest-1  | --- Create (c=10) ---
+loadtest-1  |   Total:	19.6438 secs
+loadtest-1  |   Slowest:	19.6390 secs
+loadtest-1  |   Fastest:	0.0021 secs
+loadtest-1  |   Average:	3.0211 secs
+loadtest-1  |   Requests/sec:	3.3089
+loadtest-1  |   50% in 0.0053 secs
+loadtest-1  |   95% in 19.6136 secs
+loadtest-1  |   [201]	65 responses
+loadtest-1  | 
+loadtest-1  | --- Create (c=50) ---
+loadtest-1  |   Total:	21.9722 secs
+loadtest-1  |   Slowest:	0.0534 secs
+loadtest-1  |   Fastest:	0.0018 secs
+loadtest-1  |   Average:	0.0251 secs
+loadtest-1  |   Requests/sec:	130.5742
+loadtest-1  |   50% in 0.0245 secs
+loadtest-1  |   95% in 0.0341 secs
+loadtest-1  |   99% in 0.0375 secs
+loadtest-1  |   [201]	2819 responses
+loadtest-1  | 
+loadtest-1  | --- Create (c=100) ---
+loadtest-1  |   Total:	20.5950 secs
+loadtest-1  |   Slowest:	19.4303 secs
+loadtest-1  |   Fastest:	0.0019 secs
+loadtest-1  |   Average:	0.1928 secs
+loadtest-1  |   Requests/sec:	45.0595
+loadtest-1  |   50% in 0.0271 secs
+loadtest-1  |   95% in 0.0587 secs
+loadtest-1  |   99% in 0.0823 secs
+loadtest-1  |   [201]	835 responses
+loadtest-1  | 
+loadtest-1  | ============================================================
+loadtest-1  | HEALTH CHECK TEST (GET /health)
+loadtest-1  | ============================================================
+loadtest-1  | --- Health (c=100) ---
+loadtest-1  |   Total:	19.8673 secs
+loadtest-1  |   Slowest:	19.7638 secs
+loadtest-1  |   Fastest:	0.0008 secs
+loadtest-1  |   Average:	3.9124 secs
+loadtest-1  |   Requests/sec:	24.9656
+loadtest-1  |   50% in 0.0120 secs
+loadtest-1  |   95% in 19.3617 secs
+loadtest-1  |   99% in 19.7597 secs
+loadtest-1  |   [200]	496 responses
+loadtest-1  | 
+loadtest-1  | Load tests complete.
+[Kloadtest-1 exited with code 0
