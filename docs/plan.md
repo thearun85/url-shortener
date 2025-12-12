@@ -41,3 +41,14 @@ Add visibility before optimization.
 - Persistent 68s tail latency confirms database I/O bottleneck (not CPU)
 - Prometheus tracks creates, collisions, redirects
 - Next optimization: caching to reduce database pressure
+
+## Version 0.3 — Async Writes + Load Test Tooling
+
+Address root cause of tail latency.
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Replace Locust with hey for cleaner load testing | Completed |
+| 1 | Redis queue for click events (push instead of insert) | Not Started |
+| 2 | Background worker for batch Click inserts | Not Started |
+| 3 | Load test — verify latency fix | Not Started |
