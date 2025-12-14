@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.utils import get_short_code
+from app.utils import get_short_code, validate_url, validate_shortcode
 from app.db import get_session
 from app.models import URL
 
@@ -15,6 +15,12 @@ def create_shortcode():
             "error": "URL is a required field"
         }), 400
 
+    original_url = data["url"]
+    is_valid, error = validate_url(original_url)
+    if not is_valid:
+        return jsonify({
+            "error", error
+        }), 400
     gen_short_code = get_short_code()
     session = get_session()
     try:
@@ -41,6 +47,11 @@ def create_shortcode():
 @urls_bp.route("/<short_code>", methods=["GET"])
 def get_url(short_code):
 
+    is_valid, error = validate_shortcode(short_code)
+    if not is_valid:
+        return jsonify({
+            "error": error
+        }), 400
     session = get_session()
 
     try:

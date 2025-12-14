@@ -29,6 +29,16 @@ docker compose up --build
 curl http://localhost:5000
 ```
 
+## Validations
+| Field | Validation |
+|-------|------------|
+| url | Cannot be empty |
+| url | Cannot exceed 2048 characters |
+| url | Valid Email format |
+| short_code | Cannot be empty |
+| short_code | Cannot exceed 10 characters |
+
+
 ## Endpoints
 | Method | Endpoint | Description |
 |--------|----------|-------------|
