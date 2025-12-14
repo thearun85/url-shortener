@@ -28,3 +28,25 @@ Not another tutorial URL shortener. This project deliberately exposes bottleneck
 docker compose up --build
 curl http://localhost:5000
 ```
+
+## Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /health | Check the status of URL shortener |
+
+**Health check API:**
+
+```bash
+curl http://localhost:5000/health
+```
+Expected Output:
+```json
+{
+	"status":"healthy"
+}
+```
+
+## Teardown Application
+```bash
+docker compose down -v
+```
