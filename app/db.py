@@ -15,4 +15,4 @@ def init_db(db_url):
 def get_session():
     if Session is None:
         raise RuntimeError("Database is not yet initialized. Call init_db first.")
-    return Session
+    return Session()
