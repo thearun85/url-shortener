@@ -15,7 +15,7 @@ Single sync worker, establish baseline before scaling.
 | 1 | Docker + health check API (1 Gunicorn worker) | Completed |
 | 2 | Models + DB setup with `create_all()` | Completed |
 | 3 | Create URL API - short code generation | Completed |
-| 4 | Read + redirect API | Yet to Start |
+| 4 | Read + redirect API | Completed |
 | 5 | Click tracking API | Yet to Start |
 | 6 | Validations | Yet to Start |
 | 7 | Create URL API - Collision tracking | Yet to Start |

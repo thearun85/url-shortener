@@ -34,6 +34,8 @@ curl http://localhost:5000
 |--------|----------|-------------|
 | GET | /health | Check the status of URL shortener |
 | POST | /api/urls | Create a short code for the url |
+| GET | /api/urls/<short_code> | Get the details of a short code |
+| GET | /<short_code> | Launch the url referred by the short code |
 
 **Health check API:**
 
@@ -62,6 +64,26 @@ Expected Output:
 }
 ```
 
+**Get Shortcode Details:**
+
+```bash
+curl http://localhost:5000/api/urls/<short_code>
+```
+Expected Output:
+```json
+{
+	"clicks":0,
+	"created_at":"2025-12-10T18:50:28.253664",
+	"original_url":"http://localexample.com",
+	"short_code":"5i6",
+}
+```
+
+**Redirect URL:**
+
+```bash
+curl http://localhost:5000/<short_code>
+```
 
 ## Connect to Database
 ```bash
