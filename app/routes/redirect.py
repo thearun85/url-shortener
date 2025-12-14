@@ -15,6 +15,11 @@ def redirect_to_url(short_code):
             return jsonify({
                 "erorr": "URL not found"
             }), 400
+        click = Click(
+            url_id = url.id,
+        )
+        session.add(click)
+        session.commit()
         return redirect(url.original_url, code=302)
         
     finally:
