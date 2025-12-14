@@ -11,7 +11,7 @@ Single sync worker, establish baseline before scaling.
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Architecture and flow diagrams, plan.md | Yet to Start |
+| 0 | Architecture and flow diagrams, plan.md | Completed |
 | 1 | Docker + health check API (1 Gunicorn worker) | Yet to Start |
 | 2 | Models + DB setup with `create_all()` | Yet to Start |
 | 3 | Create URL API - short code generation | Yet to Start |
