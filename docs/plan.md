@@ -25,3 +25,14 @@ Single sync worker, establish baseline before scaling.
 
 **Proofs:**
 - [results](docs/benchmarks.md#Phase-0-sync-baseline)
+
+## Version 0.2 — Observability + Multi-Worker
+
+Add visibility before optimization.
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Alembic migrations setup | Yet to Start |
+| 1 | Multiple Gunicorn workers load testing with baseline results | Yet to Start |
+| 2 | Prometheus metrics integration | Yet to Start |
+| 3 | Fix for collision during short code generation | Yet to Start |
