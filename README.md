@@ -120,5 +120,6 @@ docker compose -f docker-compose.loadtest.yml run --rm loadtest -f /loadtests/lo
 ## Performance
 - v0.1  (Sync with 1 worker): ~400 req/s baseline
 - v0.2 (Sync with 4 workers): ~400 req/s ceiling, latency improved by 45%
+- v0.3 (Async writes): ~400 req/s, P99 reduced to 51ms (35% improvement)
 
 See [benchmarks](docs/benchmarks.md) for detailed results.
