@@ -77,6 +77,9 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Increase the SQLAlchemy poolsize | Yet to Start |
+| 0 | Increase the SQLAlchemy poolsize | Completed |
 | 1 | Increase the number of sync workers to 4 | Yet to Start |
 | 2 | Use asynchronous processing in gunicorn with gevent | Yet to Start |
+
+**Observations:Phase 0** The pool isn't saturated because Gunicorn workers are the bottleneck, not DB connections. With sync workers, each can only handle 1 request at a time:
+ 
