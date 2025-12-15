@@ -72,3 +72,11 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 
 **Proofs:**
 [results](docs/benchmarks.md#Redis Read Cache (v0.4))
+
+## Version 0.5 — Overcome the throughput ceiling
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Increase the SQLAlchemy poolsize | Yet to Start |
+| 1 | Increase the number of sync workers to 4 | Yet to Start |
+| 2 | Use asynchronous processing in gunicorn with gevent | Yet to Start |
