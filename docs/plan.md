@@ -65,5 +65,5 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 0 | Redis cache changes for redirects | Completed |
-| 1 | Cache hit ratio metrics for prometheus | Not Started |
+| 1 | Cache hit ratio metrics for prometheus | Completed |
 | 2 | Load test comparison | Not Started |
