@@ -32,7 +32,7 @@ Add visibility before optimization.
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Alembic migrations setup | Yet to Start |
+| 0 | Alembic migrations setup | Completed |
 | 1 | Multiple Gunicorn workers load testing with baseline results | Yet to Start |
 | 2 | Prometheus metrics integration | Yet to Start |
 | 3 | Fix for collision during short code generation | Yet to Start |
