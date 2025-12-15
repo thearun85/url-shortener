@@ -51,9 +51,19 @@ Reduce the db pressure by moving the click inserts initiated during redirects to
 |-------|-------------|--------|
 | 0 | Redis queue for click events (push instead of insert) | Completed |
 | 1 | Background worker for batch Click inserts | Completed |
-| 3 | Load test with baseline results | Not Started |
+| 2 | Load test with baseline results | Not Started |
 
 **Outcome:** Async writes (~400 req/s maintained, P99 reduced by 35% to 51ms at 200 users, latency improved across all load levels) — 
 
 **Proofs:**
 - [results](docs/benchmarks.md#async-writes)
+
+## Version 0.4 — Redis cache for redirects
+
+Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by implementing Redis cache.
+ 
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Redis cache changes for redirects | Completed |
+| 1 | Cache hit ratio metrics for prometheus | Not Started |
+| 2 | Load test comparison | Not Started |
