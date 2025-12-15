@@ -39,3 +39,14 @@ Add visibility before optimization.
 
 **Outcome:** ~400 req/s, 4 workers improved latency by ~45% but didn't break throughput ceiling) — [results](docs/benchmarks.md#sync-baseline
 - Next optimization: caching to reduce database pressure
+
+
+## Version 0.3 — Async Writes for Click table
+
+Reduce the db pressure by moving the click inserts initiated during redirects to a redis queue.
+ 
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Redis queue for click events (push instead of insert) | Completed |
+| 1 | Background worker for batch Click inserts | Not Started |
+| 3 | Load test with baseline results | Not Started |
