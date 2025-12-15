@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, redirect
 from app.db import get_session
-from app.models import URL, Click
+from app.models import URL
 from app.utils import validate_shortcode, url_redirects_total
+from app.queue import add_to_queue
 
 redirect_bp = Blueprint("redirect", __name__)
 
@@ -21,11 +22,7 @@ def redirect_to_url(short_code):
             return jsonify({
                 "erorr": "URL not found"
             }), 404
-        click = Click(
-            url_id = url.id,
-        )
-        session.add(click)
-        session.commit()
+        add_to_queue(url.id)
         url_redirects_total.inc()
         return redirect(url.original_url, code=302)
         

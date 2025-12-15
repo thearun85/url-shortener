@@ -4,3 +4,4 @@ sqlalchemy==2.0.41
 psycopg2-binary==2.9.10
 alembic==1.14.0
 prometheus-client==0.21.0
+redis==5.0.0

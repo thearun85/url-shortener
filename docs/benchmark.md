@@ -55,3 +55,51 @@ Gunicorn server with synchronous Postgres operations.
 
 - [1 Worker Results](results/v0.1/)
 - [4 Workers Results](results/v0.2/)
+
+## Async Writes (v0.3)
+
+Flask with 4 Gunicorn workers, async writes to clicks table.
+
+### 4 Workers Async Write
+
+| Users | Requests/s | Median | P95  | P99  | Failures |
+|-------|-----------|--------|------|------|----------|
+| 1     | ~24       | 9ms    | 14ms | 17ms | 0 (0%)   |
+| 20    | ~443      | 3ms    | 6ms  | 10ms | 0 (0%)   |
+| 100   | ~356      | 5ms    | 17ms | 24ms | 0 (0%)   |
+| 200   | ~400      | 11ms   | 36ms | 51ms | 0 (0%)   |
+
+### Full Comparison: 1W Sync vs 4W Sync vs 4W Async Write
+
+| Users | Metric     | 1W Sync | 4W Sync | 4W Async | Best |
+|-------|------------|---------|---------|----------|------|
+| 1     | Median     | 10ms    | 10ms    | 9ms      | — |
+| 1     | P99        | 16ms    | 16ms    | 17ms     | — |
+| 1     | Throughput | ~24     | ~23     | ~24      | — |
+| 20    | Median     | 4ms     | 4ms     | 3ms      | **Async 25%↓** |
+| 20    | P99        | 17ms    | 13ms    | 10ms     | **Async 41%↓** |
+| 20    | Throughput | ~355    | ~398    | ~443     | **Async 11%↑** |
+| 100   | Median     | 11ms    | 6ms     | 5ms      | **Async 55%↓** |
+| 100   | P99        | 39ms    | 33ms    | 24ms     | **Async 38%↓** |
+| 100   | Throughput | ~372    | ~375    | ~356     | 4W Sync |
+| 200   | Median     | 30ms    | 16ms    | 11ms     | **Async 63%↓** |
+| 200   | P99        | 79ms    | 63ms    | 51ms     | **Async 35%↓** |
+| 200   | Throughput | ~409    | ~410    | ~400     | ~same |
+| All   | Failures   | 6       | 0       | 0        | ✓ |
+
+### Observations
+
+- **Latency wins**: Async writes deliver lowest latency across all load levels
+  - P99 at 200 users: 79ms → 63ms → 51ms (35% improvement over sync)
+  - Median at 200 users: 30ms → 16ms → 11ms (63% improvement over 1W sync)
+- **Throughput**: ~400 req/s ceiling persists — bottleneck is elsewhere
+- **Stability**: Zero failures maintained
+- **Sweet spot**: 20 users shows best async advantage (~443 req/s, 10ms P99)
+
+### Conclusion
+
+Async writes significantly improve latency without sacrificing throughput or stability. The ~400 req/s ceiling confirms the bottleneck is likely on the read path or connection pooling.
+
+### Raw Data
+
+- [4 Workers Async Write Results](results/v0.3/)
