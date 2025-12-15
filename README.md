@@ -104,3 +104,9 @@ docker compose exec db psql -U postgres -d urlshortener
 ```bash
 docker compose down -v
 ```
+
+
+## Performance
+- Phase 0 (Sync with 1 worker): ~400 req/s baseline
+
+See [benchmarks](docs/benchmarks.md) for detailed results.

@@ -18,7 +18,10 @@ Single sync worker, establish baseline before scaling.
 | 4 | Read + redirect API | Completed |
 | 5 | Click tracking | Completed |
 | 6 | Validations | Completed |
-| 7 | Create URL API - Collision tracking | Yet to Start |
-| 8 | Load testing, baseline metrics, document single-worker limits with locust | Yet to Start |
+| 7 | Create URL API - Collision tracking | Moved to Phase 1 |
+| 8 | Load testing,  document single-worker limits with locust | Completed |
 
-**Outcome:** Outcome: Documented proof that single sync worker saturates at X RPS.
+**Outcome:** Sync baseline established: Gunicorn server with 1 worker and synchronous Postgres operations achieves ~400 req/s maximum throughput with latency degradation (3x median, 5x P99). This ceiling represents the blocking I/O bottleneck to be addressed in subsequent phases.
+
+**Proofs:**
+- [results](docs/benchmarks.md#Phase-0-sync-baseline)

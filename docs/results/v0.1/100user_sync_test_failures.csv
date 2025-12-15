@@ -1,0 +1,2 @@
+Method,Name,Error,Occurrences
+POST,/api/urls,HTTPError('500 Server Error: INTERNAL SERVER ERROR for url: /api/urls'),2

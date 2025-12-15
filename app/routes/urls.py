@@ -32,7 +32,7 @@ def create_shortcode():
         session.commit()
         session.refresh(url)
         return jsonify({
-            "short:code": url.short_code,
+            "short_code": url.short_code,
             "original_url": url.original_url,
             "created_at": url.created_at.isoformat()
         }), 201
