@@ -8,6 +8,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/urlshortener
+      - WORKERS=4
     depends_on:
       db:
         condition: service_healthy
@@ -27,6 +28,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - app
 
 volumes:
   postgres_data_us:

@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
-from app.utils import get_short_code, validate_url, validate_shortcode
+from app.utils import get_short_code, validate_url, validate_shortcode, url_creates_total, url_collisions_total
 from app.db import get_session
 from app.models import URL
 
 urls_bp = Blueprint("urls", __name__, url_prefix="/api/urls")
+MAX_RETRIES = 10
 
 @urls_bp.route("", methods=["POST"])
 def create_shortcode():
@@ -21,8 +22,22 @@ def create_shortcode():
         return jsonify({
             "error", error
         }), 400
-    gen_short_code = get_short_code()
+
     session = get_session()
+    retries = 0
+    while retries < MAX_RETRIES:
+        gen_short_code = get_short_code()
+        exists = session.query(URL).filter_by(short_code=gen_short_code).first()
+        if not exists:
+            break
+        retries+=1
+        url_collisions_total.inc()
+
+    if retries >= MAX_RETRIES:
+        return jsonify({
+            "error": "Failed to generate unique short code"
+        }), 503
+    
     try:
         url = URL(
             short_code = gen_short_code,
@@ -31,6 +46,7 @@ def create_shortcode():
         session.add(url)
         session.commit()
         session.refresh(url)
+        url_creates_total.inc()
         return jsonify({
             "short_code": url.short_code,
             "original_url": url.original_url,
@@ -59,7 +75,7 @@ def get_url(short_code):
         if not url:
             return jsonify({
                 "error": "URL not found"
-            }), 400
+            }), 404
         click_count = len(url.clicks) if url.clicks else 0
         return jsonify({
             "short_code": url.short_code,

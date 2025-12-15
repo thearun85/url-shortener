@@ -105,8 +105,15 @@ docker compose exec db psql -U postgres -d urlshortener
 docker compose down -v
 ```
 
+## Running Locust
+```bash
+docker compose -f docker-compose.loadtest.yml run --rm loadtest -f /loadtests/locustfile.py --headless -u 100 -r 10 -t 60s --csv=/results/v0.2/test
+```
 
+## Running Prometheus
+### http://localhost:9090/
 ## Performance
-- Phase 0 (Sync with 1 worker): ~400 req/s baseline
+- v0.1  (Sync with 1 worker): ~400 req/s baseline
+- v0.2 (Sync with 4 workers): ~400 req/s ceiling, latency improved by 45%
 
 See [benchmarks](docs/benchmarks.md) for detailed results.

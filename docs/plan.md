@@ -25,3 +25,17 @@ Single sync worker, establish baseline before scaling.
 
 **Proofs:**
 - [results](docs/benchmarks.md#Phase-0-sync-baseline)
+
+## Version 0.2 — Observability + Multi-Worker
+
+Add visibility before optimization.
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Alembic migrations setup | Completed |
+| 1 | Fix for collision during short code generation | Completed |
+| 2 | Multiple Gunicorn workers load testing with baseline results | Completed |
+| 3 | Prometheus metrics integration | Completed |
+
+**Outcome:** ~400 req/s, 4 workers improved latency by ~45% but didn't break throughput ceiling) — [results](docs/benchmarks.md#sync-baseline
+- Next optimization: caching to reduce database pressure
