@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.utils import get_short_code, validate_url, validate_shortcode
+from app.utils import get_short_code, validate_url, validate_shortcode, url_creates_total, url_collisions_total
 from app.db import get_session
 from app.models import URL
 
@@ -31,6 +31,7 @@ def create_shortcode():
         if not exists:
             break
         retries+=1
+        url_collisions_total.inc()
 
     if retries >= MAX_RETRIES:
         return jsonify({
@@ -45,6 +46,7 @@ def create_shortcode():
         session.add(url)
         session.commit()
         session.refresh(url)
+        url_creates_total.inc()
         return jsonify({
             "short_code": url.short_code,
             "original_url": url.original_url,

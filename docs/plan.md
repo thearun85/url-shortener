@@ -35,6 +35,7 @@ Add visibility before optimization.
 | 0 | Alembic migrations setup | Completed |
 | 1 | Fix for collision during short code generation | Completed |
 | 2 | Multiple Gunicorn workers load testing with baseline results | Completed |
-| 3 | Prometheus metrics integration | Yet to Start |
+| 3 | Prometheus metrics integration | Completed |
 
 **Outcome:** ~400 req/s, 4 workers improved latency by ~45% but didn't break throughput ceiling) — [results](docs/benchmarks.md#sync-baseline
+- Next optimization: caching to reduce database pressure
