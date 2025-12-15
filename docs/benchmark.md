@@ -103,3 +103,82 @@ Async writes significantly improve latency without sacrificing throughput or sta
 ### Raw Data
 
 - [4 Workers Async Write Results](results/v0.3/)
+
+## Redis Read Cache (v0.4)
+
+Flask with 4 Gunicorn workers, async writes, Redis cache for redirect lookups.
+
+### Results
+
+| Users | Requests/s | Median | P95  | P99  | Failures |
+|-------|-----------|--------|------|------|----------|
+| 1     | ~24       | 8ms    | 15ms | 22ms | 0 (0%)   |
+| 20    | ~447      | 3ms    | 6ms  | 12ms | 0 (0%)   |
+| 100   | ~182*     | 4ms    | 17ms | 28ms | 0 (0%)   |
+| 200   | ~409      | 12ms   | 45ms | 56ms | 0 (0%)   |
+
+*100 user throughput anomaly — likely test variance
+
+### Comparison: Async Write vs Async Write + Redis Cache
+
+| Users | Metric     | Async Write | + Redis Cache | Change |
+|-------|------------|-------------|---------------|--------|
+| 20    | Median     | 3ms         | 3ms           | — |
+| 20    | P99        | 10ms        | 12ms          | ⚠️ +20% |
+| 200   | Median     | 11ms        | 12ms          | — |
+| 200   | P99        | 51ms        | 56ms          | ⚠️ +10% |
+
+### Why Redis Cache Didn't Help
+
+Redis and Postgres are co-located in the same Docker network:
+```
+Postgres indexed lookup: ~1-2ms (network + query)
+Redis cache lookup:      ~1-2ms (network + get)
+```
+
+Both require a network round-trip. A simple indexed lookup (`SELECT * FROM urls WHERE short_code = ?`) is already sub-millisecond at the DB level. Redis doesn't eliminate the network hop — it just replaces one with another.
+
+**When Redis cache helps:**
+- Complex queries (joins, aggregations)
+- High DB CPU load — offloading reads
+- DB is remote, Redis is local
+
+**When it doesn't help (this case):**
+- Simple indexed lookups (already fast)
+- Redis and Postgres co-located (same network latency)
+- Read path wasn't the bottleneck
+
+### Conclusion
+
+Redis read cache provides no benefit when co-located with Postgres. The async writes in Phase 1 addressed the actual bottleneck (write I/O). For further improvement, consider in-process caching (eliminates network) or connection pool tuning.
+
+### Raw Data
+
+- [4 Workers Async Write + Redis Cache Results](results/v0.4/)
+
+---
+
+## Summary: Full Comparison
+
+| Users | Metric     | 1W Sync | 4W Sync | +Async Write | +Redis Cache |
+|-------|------------|---------|---------|--------------|--------------|
+| 1     | Median     | 10ms    | 10ms    | 9ms          | 8ms          |
+| 1     | P99        | 16ms    | 16ms    | 17ms         | 22ms         |
+| 20    | Median     | 4ms     | 4ms     | 3ms          | 3ms          |
+| 20    | P99        | 17ms    | 13ms    | 10ms         | 12ms         |
+| 20    | Throughput | ~355    | ~398    | ~443         | ~447         |
+| 100   | Median     | 11ms    | 6ms     | 5ms          | 4ms          |
+| 100   | P99        | 39ms    | 33ms    | 24ms         | 28ms         |
+| 200   | Median     | 30ms    | 16ms    | 11ms         | 12ms         |
+| 200   | P99        | 79ms    | 63ms    | 51ms         | 56ms         |
+| 200   | Throughput | ~409    | ~410    | ~400         | ~409         |
+| All   | Failures   | 6       | 0       | 0            | 0            |
+
+### Key Learnings
+
+1. **4 workers**: Improved latency ~45%, eliminated failures, didn't break throughput ceiling
+2. **Async writes**: Biggest win — P99 dropped 35% (79ms → 51ms), write path was the bottleneck
+3. **Redis cache**: No benefit — co-located services have equivalent network latency, indexed reads already fast
+4. **Throughput ceiling**: ~400 req/s persists across all configs — likely Gunicorn/connection pool limits
+
+---
