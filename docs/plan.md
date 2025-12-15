@@ -33,6 +33,8 @@ Add visibility before optimization.
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 0 | Alembic migrations setup | Completed |
-| 1 | Multiple Gunicorn workers load testing with baseline results | Yet to Start |
-| 2 | Prometheus metrics integration | Yet to Start |
-| 3 | Fix for collision during short code generation | Yet to Start |
+| 1 | Fix for collision during short code generation | Completed |
+| 2 | Multiple Gunicorn workers load testing with baseline results | Completed |
+| 3 | Prometheus metrics integration | Yet to Start |
+
+**Outcome:** ~400 req/s, 4 workers improved latency by ~45% but didn't break throughput ceiling) — [results](docs/benchmarks.md#sync-baseline
