@@ -72,3 +72,21 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 
 **Proofs:**
 [results](docs/benchmarks.md#Redis Read Cache (v0.4))
+
+## Version 0.5 — Overcome the throughput ceiling
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Increase the SQLAlchemy poolsize | Completed |
+| 1 | Increase the number of sync workers to 8 | Completed |
+| 2 | Use asynchronous processing in gunicorn with gevent | Completed |
+
+**Observations:Phase 0** The pool isn't saturated because Gunicorn workers are the bottleneck, not DB connections. With sync workers, each can only handle 1 request at a time:
+ 
+**Observations:Phase 1** Throughput stayed constant while latency degraded significantly. Signs of CPU contention, Docker resource limits or Context switching overhead.
+
+
+**Outcome:** Gevent workers (**4x throughput breakthrough** — ~1,676 req/s, broke the sync I/O ceiling)
+
+**Proofs:**  
+[results](docs/benchmarks.md#gevent-workers)

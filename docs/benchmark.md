@@ -182,3 +182,88 @@ Redis read cache provides no benefit when co-located with Postgres. The async wr
 4. **Throughput ceiling**: ~400 req/s persists across all configs — likely Gunicorn/connection pool limits
 
 ---
+
+## Gevent Workers (v0.5)
+
+Flask with 4 Gunicorn gevent workers, async writes, Redis cache.
+
+### Results (200 Users)
+
+| Metric     | Value |
+|------------|-------|
+| Requests/s | **~1,676** |
+| Median     | 67ms  |
+| P95        | 99ms  |
+| P99        | 120ms |
+| Failures   | 0 (0%) |
+
+### Comparison: Sync vs Gevent (200 Users)
+
+| Metric     | 4W Sync | 8W Sync | 4W Gevent | Change vs 4W Sync |
+|------------|---------|---------|-----------|-------------------|
+| Throughput | ~403    | ~407    | **~1,676** | **4x increase** |
+| Median     | 12ms    | 23ms    | 67ms      | higher (expected) |
+| P99        | 48ms    | 120ms   | 120ms     | same |
+
+### Failed Experiment: 8 Sync Workers
+
+Doubling sync workers to 8 made performance **worse**:
+- Throughput: ~407 (no improvement)
+- Median: 23ms (2x worse than 4W)
+- P99: 120ms (2.5x worse than 4W)
+
+**Cause**: CPU contention and context switching overhead. More sync workers doesn't help when the bottleneck is I/O wait, not CPU.
+
+### Why Gevent Works
+
+Sync workers block during I/O:
+```
+Request → DB query → [BLOCKED WAITING] → Response
+          1 request per worker at a time
+```
+
+Gevent workers yield during I/O:
+```
+Request A → DB query → [yield to B] → Response A
+Request B → DB query → [yield to C] → Response B
+            Many requests per worker concurrently
+```
+
+With 4 workers × 200 connections = 800 concurrent requests possible.
+
+### Trade-off
+
+| Config | Throughput | Median | P99 | Best For |
+|--------|-----------|--------|-----|----------|
+| 4W Sync | ~400 | 12ms | 48ms | Low traffic, lowest latency |
+| 4W Gevent | **~1,676** | 67ms | 120ms | **High traffic, production** |
+
+Higher per-request latency, but 4x more requests handled. For a URL shortener serving many users, this is the right trade-off.
+
+### Conclusion
+
+Gevent broke the ~400 req/s sync I/O ceiling with a **4x throughput improvement**. This confirms the bottleneck was blocking I/O wait, not CPU, connections, or caching.
+
+### Raw Data
+
+- [4 Workers Gevent Results](results/v0.5/)
+
+---
+
+## Summary: Full Journey
+
+| Phase | Config | Throughput | P99 | Key Learning |
+|-------|--------|-----------|-----|--------------|
+| 0 | 1W Sync | ~409 | 79ms | Baseline |
+| 0 | 4W Sync | ~410 | 63ms | Workers improve latency, not throughput |
+| 1 | 4W Async Write | ~400 | 51ms | Write path was latency bottleneck |
+| 2 | + Redis Cache | ~409 | 56ms | No benefit — co-located services |
+| 3 | 4W Gevent | **~1,676** | 120ms | **4x throughput — I/O wait was the ceiling** |
+
+### Key Learnings
+
+1. **More sync workers ≠ more throughput** — just adds CPU contention
+2. **Async writes** — biggest latency improvement (35% P99 reduction)
+3. **Redis cache** — no benefit when co-located with DB, simple indexed lookups already fast
+4. **Gevent** — 4x throughput by handling I/O wait efficiently, the real breakthrough
+5. **Trade-offs exist** — gevent has higher per-request latency but much higher throughput

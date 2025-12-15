@@ -7,4 +7,4 @@ alembic upgrade head
 
 echo "Starting Gunicorn"
 
-exec gunicorn --workers ${WORKERS:-1} --bind 0.0.0.0:5000 "app:create_app()" 
+exec gunicorn -k gevent --workers ${WORKERS:-1} --bind 0.0.0.0:5000 "app:create_app()" 

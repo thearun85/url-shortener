@@ -122,5 +122,6 @@ docker compose -f docker-compose.loadtest.yml run --rm loadtest -f /loadtests/lo
 - v0.2 (Sync with 4 workers): ~400 req/s ceiling, latency improved by 45%
 - v0.3 (Async writes): ~400 req/s, P99 reduced to 51ms (35% improvement)
 - v0.4 (Redis Read Cache): No improvement — equivalent network latency with co-located Postgres
+- v0.5 (Gevent workers): ~1,676 req/s (4x throughput breakthrough)
 
 See [benchmarks](docs/benchmarks.md) for detailed results.
