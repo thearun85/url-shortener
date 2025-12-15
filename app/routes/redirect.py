@@ -20,7 +20,7 @@ def redirect_to_url(short_code):
         if not url:
             return jsonify({
                 "erorr": "URL not found"
-            }), 400
+            }), 404
         click = Click(
             url_id = url.id,
         )
