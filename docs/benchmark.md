@@ -248,17 +248,36 @@ Gevent broke the ~400 req/s sync I/O ceiling with a **4x throughput improvement*
 
 - [4 Workers Gevent Results](results/v0.5/)
 
+### Stress Test: Finding the Ceiling
+
+| Users | Requests/s | Median | P99 | Failures |
+|-------|-----------|--------|------|----------|
+| 200   | ~1,752    | 63ms   | 120ms | 0 |
+| 500   | ~1,408    | 230ms  | 680ms | 0 |
+| 1000  | ~1,541    | 450ms  | 1,200ms | 0 |
+
+**Findings:**
+- Throughput ceiling at ~1,500-1,750 req/s
+- Latency degrades under heavy load (P99: 120ms → 1.2s)
+- Zero failures — graceful degradation, no crashes
+
+### Conclusion
+
+Gevent broke the ~400 req/s sync I/O ceiling with a **4x throughput improvement**. Under extreme load (1000 users), the system degrades gracefully with no failures.
+
 ---
 
 ## Summary: Full Journey
 
-| Phase | Config | Throughput | P99 | Key Learning |
-|-------|--------|-----------|-----|--------------|
-| 0 | 1W Sync | ~409 | 79ms | Baseline |
-| 0 | 4W Sync | ~410 | 63ms | Workers improve latency, not throughput |
-| 1 | 4W Async Write | ~400 | 51ms | Write path was latency bottleneck |
-| 2 | + Redis Cache | ~409 | 56ms | No benefit — co-located services |
-| 3 | 4W Gevent | **~1,676** | 120ms | **4x throughput — I/O wait was the ceiling** |
+| Version | Config | Throughput | P99 | Key Learning |
+|---------|--------|-----------|-----|--------------|
+| 0.1 | 1W Sync | ~409 | 79ms | Baseline |
+| 0.2 | 4W Sync | ~410 | 63ms | Workers improve latency, not throughput |
+| 0.3 | 4W Async Write | ~400 | 51ms | Write path was latency bottleneck |
+| 0.4 | + Redis Cache | ~409 | 56ms | No benefit — co-located services |
+| 0.5 | 4W Gevent | **~1,676** | 120ms | **4x throughput — I/O wait was the ceiling** |
+| 0.5 | 4W Gevent (1000 users) | ~1,541 | 1,200ms | Graceful degradation under extreme load |
+
 
 ### Key Learnings
 
@@ -267,3 +286,4 @@ Gevent broke the ~400 req/s sync I/O ceiling with a **4x throughput improvement*
 3. **Redis cache** — no benefit when co-located with DB, simple indexed lookups already fast
 4. **Gevent** — 4x throughput by handling I/O wait efficiently, the real breakthrough
 5. **Trade-offs exist** — gevent has higher per-request latency but much higher throughput
+

@@ -86,7 +86,8 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 **Observations:Phase 1** Throughput stayed constant while latency degraded significantly. Signs of CPU contention, Docker resource limits or Context switching overhead.
 
 
-**Outcome:** Gevent workers (**4x throughput breakthrough** — ~1,676 req/s, broke the sync I/O ceiling)
+**Outcome:** Gevent workers (**4x throughput breakthrough** — ~1,676 req/s, broke the sync I/O ceiling) ceiling at ~1,500 req/s under heavy load with graceful degradation)
+
 
 **Proofs:**  
 [results](docs/benchmarks.md#gevent-workers)
