@@ -66,4 +66,9 @@ Overcome the I/O bottleneck resulting in throughput ceiling of ~400 RPS by imple
 |-------|-------------|--------|
 | 0 | Redis cache changes for redirects | Completed |
 | 1 | Cache hit ratio metrics for prometheus | Completed |
-| 2 | Load test comparison | Not Started |
+| 2 | Load test comparison | Completed |
+
+**Outcome:** Redis read cache (no improvement — Redis and Postgres co-located in Docker have equivalent network latency, indexed lookups already fast) — 
+
+**Proofs:**
+[results](docs/benchmarks.md#Redis Read Cache (v0.4))
