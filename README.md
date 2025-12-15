@@ -100,6 +100,11 @@ curl http://localhost:5000/<short_code>
 docker compose exec db psql -U postgres -d urlshortener
 ```
 
+## Connect to Redis
+```bash
+docker compose exec redis redis-cli ping
+```
+
 ## Teardown Application
 ```bash
 docker compose down -v
